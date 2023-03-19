@@ -1,6 +1,6 @@
 import { Box, Button, Container, HStack, Input, VStack } from "@chakra-ui/react";
 import Message from "./components/Message";
-import { onAuthStateChanged, getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { onAuthStateChanged, getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 import { app } from './firebase'
 import { useEffect, useState } from "react";
 
@@ -12,15 +12,23 @@ const loginHandler = () => {
     signInWithPopup(auth, provider)
 }
 
+const logoutHandler = () => {
+    signOut(auth);
+}
+
 function App() {
 
     const [user, setUser] = useState(false)
 
     useEffect(() => {
-        onAuthStateChanged(auth, (data) => {
+        const unsubscribe = onAuthStateChanged(auth, (data) => {
             setUser(data);
         })
-    }, [])
+
+        return () => {
+            unsubscribe()
+        };
+    }, []);
     
 
     return (
@@ -30,7 +38,7 @@ function App() {
                     user ? (
                         <Container h={'100vh'} w={'sm'} bg={'white'}>
                             <VStack h={'full'} py={3}>
-                                <Button size={'sm'} fontSize={'sm'} colorScheme={'red'} w={'full'}>
+                                <Button onClick={logoutHandler} size={'sm'} fontSize={'sm'} colorScheme={'red'} w={'full'}>
                                     Logout
                                 </Button>
 
