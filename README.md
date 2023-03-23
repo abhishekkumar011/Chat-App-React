@@ -1,7 +1,5 @@
 # Getting Started with Create React App
 
-Live Link - https://abhishekkumar011.github.io/Chat-App-React/
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
